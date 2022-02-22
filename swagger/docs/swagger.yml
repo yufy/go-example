@@ -1,0 +1,251 @@
+basePath: /v1
+consumes:
+- application/json
+definitions:
+  User:
+    properties:
+      created_at:
+        format: date-time
+        type: string
+        x-go-name: CreatedAt
+      email:
+        type: string
+        x-go-name: Email
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+      name:
+        type: string
+        x-go-name: Name
+      updated_at:
+        format: date-time
+        type: string
+        x-go-name: UpdatedAt
+    type: object
+    x-go-package: github.com/yufy/go-example/swagger/types
+host: localhost
+info:
+  contact:
+    email: 1504960756@qq.com
+    name: yufy
+  description: |-
+    the purpose of this application is to provide an application
+    that is using plain go code to define an API
+
+    This should demonstrate all the possible comment annotations
+    that are available to turn go code into a fully compliant swagger 2.0 spec
+  termsOfService: there are no TOS at this moment, use at your own risk we take no
+    responsibility
+  title: go-example API.
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: 通过指定参数查询用户
+      operationId: users
+      parameters:
+      - format: int64
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+        x-go-name: Page
+      - format: int64
+        in: query
+        minimum: 1
+        name: page_size
+        type: integer
+        x-go-name: PageSize
+      - in: query
+        name: name
+        type: string
+        x-go-name: Name
+      - in: query
+        name: email
+        type: string
+        x-go-name: Email
+      produces:
+      - appliation/json
+      - 'Scheme: http'
+      responses:
+        "200":
+          $ref: '#/responses/usersResponse'
+      summary: 用户列表
+      tags:
+      - 用户
+    post:
+      consumes:
+      - application/json
+      description: 添加新用户
+      operationId: createUser
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          properties:
+            email:
+              type: string
+              x-go-name: Email
+            name:
+              type: string
+              x-go-name: Name
+          type: object
+      produces:
+      - appliation/json
+      - 'Scheme: http'
+      responses:
+        "200":
+          $ref: '#/responses/userResponse'
+        "400":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      summary: 添加用户
+      tags:
+      - 用户
+  /users/:id:
+    delete:
+      consumes:
+      - urlform
+      description: 删除指定ID用户
+      operationId: deleteUser
+      parameters:
+      - format: int64
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
+      produces:
+      - appliation/json
+      - 'Scheme: http'
+      responses:
+        "200":
+          $ref: '#/responses/usersResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      summary: 删除用户
+      tags:
+      - 用户
+    get:
+      consumes:
+      - urlform
+      description: 获取指定ID用户
+      operationId: user
+      parameters:
+      - format: int64
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
+      produces:
+      - appliation/json
+      - 'Scheme: http'
+      responses:
+        "200":
+          $ref: '#/responses/usersResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      summary: 用户详情
+      tags:
+      - 用户
+    put:
+      consumes:
+      - application/json
+      description: 更新指定ID用户
+      operationId: updateUser
+      parameters:
+      - format: int64
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
+      - in: body
+        name: Body
+        schema:
+          properties:
+            email:
+              type: string
+              x-go-name: Email
+            name:
+              type: string
+              x-go-name: Name
+          type: object
+      produces:
+      - appliation/json
+      - 'Scheme: http'
+      responses:
+        "200":
+          $ref: '#/responses/usersResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "500":
+          $ref: '#/responses/errorResponse'
+      summary: 更新用户
+      tags:
+      - 用户
+produces:
+- application/json
+responses:
+  errorResponse:
+    description: ""
+    schema:
+      properties:
+        code:
+          format: int64
+          type: integer
+          x-go-name: Code
+        data:
+          type: object
+          x-go-name: Data
+        msg:
+          type: string
+          x-go-name: Msg
+      type: object
+  userResponse:
+    description: ""
+    schema:
+      properties:
+        code:
+          format: int64
+          type: integer
+          x-go-name: Code
+        data:
+          $ref: '#/definitions/User'
+          type: object
+          x-go-name: Data
+        msg:
+          type: string
+          x-go-name: Msg
+      type: object
+  usersResponse:
+    description: ""
+    schema:
+      properties:
+        code:
+          format: int64
+          type: integer
+          x-go-name: Code
+        data:
+          items:
+            $ref: '#/definitions/User'
+          type: array
+          x-go-name: Data
+        msg:
+          type: string
+          x-go-name: Msg
+      type: object
+schemes:
+- http
+- https
+swagger: "2.0"
